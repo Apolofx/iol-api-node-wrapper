@@ -11,14 +11,10 @@ interface AuthResponse {
 }
 
 const authenticate = async (
-  username: string | undefined,
-  password: string | undefined,
-  apiUrl: string | undefined
+  username: string,
+  password: string,
+  apiUrl: string
 ): Promise<AuthResponse> => {
-  if (!apiUrl) throw new Error(`Missing URL value ${apiUrl}`);
-  if (!username) throw new Error(`Missing username value ${username}`);
-  if (!password) throw new Error(`Missing URL value ${password}`);
-
   const params = new URLSearchParams();
   params.append("password", password);
   params.append("username", username);
