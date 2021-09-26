@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "index.d.ts",
   "scripts": {
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "dev": "ts-node ./src/index.ts",
     "prebuild": "rm -rf dist",
     "build": "tsc"
