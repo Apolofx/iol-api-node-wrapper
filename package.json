@@ -8,7 +8,8 @@
     "test": "jest --passWithNoTests",
     "dev": "ts-node ./src/index.ts",
     "prebuild": "rm -rf dist",
-    "build": "tsc"
+    "build": "tsc",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -28,7 +29,10 @@
   "homepage": "https://github.com/Apolofx/iol-api-node-wrapper#readme",
   "devDependencies": {
     "@types/jest": "^27.0.2",
+    "husky": "^7.0.2",
     "jest": "^27.2.2",
+    "lint-staged": "^11.1.2",
+    "prettier": "^2.4.1",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.3"
@@ -36,5 +40,8 @@
   "dependencies": {
     "axios": "^0.21.4",
     "dotenv": "^10.0.0"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
