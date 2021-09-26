@@ -1,0 +1,40 @@
+{
+  "name": "iol-api-node-wrapper",
+  "version": "0.0.0",
+  "description": "Node Library to wrap Invertir Online API",
+  "main": "dist/index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "jest --passWithNoTests",
+    "dev": "ts-node ./src/index.ts",
+    "prebuild": "rm -rf dist",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Apolofx/iol-api-node-wrapper.git"
+  },
+  "keywords": [
+    "iol",
+    "api",
+    "node",
+    "wrapper"
+  ],
+  "author": "Nacho Consolani",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Apolofx/iol-api-node-wrapper/issues"
+  },
+  "homepage": "https://github.com/Apolofx/iol-api-node-wrapper#readme",
+  "devDependencies": {
+    "@types/jest": "^27.0.2",
+    "jest": "^27.2.2",
+    "ts-jest": "^27.0.5",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3"
+  },
+  "dependencies": {
+    "axios": "^0.21.4",
+    "dotenv": "^10.0.0"
+  }
+}

@@ -1,0 +1,26 @@
+name: CI PROD
+
+on:
+  push:
+    branches: 'main'
+  pull_request:
+    branches: 'main'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+        cache: 'npm'
+    - run: npm install
+    - run: npm run build --if-present
+    - run: npm test
+
+# TODO Add NPM Publish job on merges to main
+# @label enhancement
