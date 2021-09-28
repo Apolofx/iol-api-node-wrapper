@@ -3,7 +3,7 @@
 ## Preqrequisites
 
 1. Have a valid IOL account.
-2. Have access to IOL API.
+2. [Have access to IOL API](https://www.invertironline.com/api/documentacion-api).
 3. NodeJS installed
 
 ## Initial Setup
