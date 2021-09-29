@@ -1,4 +1,4 @@
-# IOL API NodeJS Wrapper
+# IOL API NodeJS Wrapper [in development]
 
 ## Preqrequisites
 
@@ -10,18 +10,18 @@
 
 1. Create `.env` with the following:
    ```
-   IOL_API_URL=<IOL api url>
    IOL_USERNAME=<your IOL account username>
    IOL_PASSWORD=<your IOL account password>
    ```
+   Optionally you can hardcode your `username` and `password` on IolClient's config method (only for testing purposes).
 
 ## Usage
 
 1. Clone repo.
 2. `cd` to repo dir.
 3. run `yarn` or `npm install`
-4. run `yarn build` or `npm run build`
-5. run `node dist/index.js`
+4. Initialize IolClient on `src/index` with `IolClient.config() using your usr and psw.
+5. run `yarn dev`
 
 ## Ignore this
 
