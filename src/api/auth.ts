@@ -1,34 +1,17 @@
-import axios, { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios";
 import { constants, USERNAME, PASSWORD } from "../config";
+import HttpClient from "./http-client";
 
-export default class Authentication {
+export default class Authentication extends HttpClient {
   public accessToken: string = "";
   private refreshToken: string = "";
   private expirationDate: string = "";
 
-  private constructor(
-    accessToken: string,
-    refreshToken: string,
-    expirationDate: string
-  ) {
-    this.accessToken = accessToken;
-    this.refreshToken = refreshToken;
-    this.expirationDate = expirationDate;
+  public constructor() {
+    super(constants.IOL_API_URL);
   }
 
-  public static async init(authData: IolAuthData) {
-    const auth = await this.authenticate(authData);
-    console.log(auth.access_token);
-    return new Authentication(
-      auth.access_token,
-      auth.refresh_token,
-      auth[".expires"]
-    );
-  }
-
-  public static async authenticate(
-    authData: IolAuthData
-  ): Promise<AuthResponse> {
+  public async authenticate(authData: IolAuthData): Promise<void> {
     const params = new URLSearchParams();
     params.append("password", authData.password);
     params.append("username", authData.username);
@@ -40,23 +23,14 @@ export default class Authentication {
     };
 
     console.log("Requesting Authentication with: ", { params, config });
-    try {
-      const response = await axios.post<AuthResponse>(
-        `${constants.IOL_API_URL}/token`,
-        params,
-        config
-      );
-      return response.data;
-    } catch (error: any) {
-      if (error.response) {
-        const errorResponse = {
-          status: error.response.status,
-          data: error.response.data,
-        };
-        console.log(JSON.stringify(errorResponse, null, 2));
-      }
-      throw error;
-    }
+    const response = await this.instance.post<AuthResponse>(
+      `${constants.IOL_API_URL}/token`,
+      params,
+      config
+    );
+    this.accessToken = response.access_token;
+    this.expirationDate = response[".expires"];
+    this.refreshToken = response.refresh_token;
   }
 
   public async getNewToken(): Promise<void> {
@@ -70,25 +44,14 @@ export default class Authentication {
     };
 
     console.log("Requesting Authentication with: ", { params, config });
-    try {
-      const response = await axios.post<AuthResponse>(
-        `${constants.IOL_API_URL}/token`,
-        params,
-        config
-      );
-      this.accessToken = response.data.access_token;
-      this.refreshToken = response.data.refresh_token;
-      this.expirationDate = response.data[".expires"];
-    } catch (error: any) {
-      if (error.response) {
-        const errorResponse = {
-          status: error.response.status,
-          data: error.response.data,
-        };
-        console.log(JSON.stringify(errorResponse, null, 2));
-      }
-      throw error;
-    }
+    const response = await this.instance.post<AuthResponse>(
+      `${constants.IOL_API_URL}/token`,
+      params,
+      config
+    );
+    this.accessToken = response.access_token;
+    this.refreshToken = response.refresh_token;
+    this.expirationDate = response[".expires"];
   }
 
   public tokenExpired(): boolean {

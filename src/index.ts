@@ -5,9 +5,13 @@ import { PASSWORD, USERNAME, API_URL } from "./config";
 import { IolConnection } from "./api";
 
 async function main() {
-  IolConnection.config({ username: USERNAME, password: PASSWORD });
-  const iol = await IolConnection.getInstance();
-  await iol.getAccountStatus();
+  try {
+    IolConnection.config({ username: USERNAME, password: PASSWORD });
+    const iol = await IolConnection.getInstance();
+    iol.getAccountStatus();
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 main();

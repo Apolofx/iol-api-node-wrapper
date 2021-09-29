@@ -12,7 +12,7 @@ export default class IolClient
   implements IolClientInterface
 {
   private static classInstance: IolClient;
-  private static auth: Authentication;
+  private static auth = new Authentication();
   private static authData: IolAuthData;
 
   private constructor() {
@@ -73,8 +73,11 @@ export default class IolClient
   }
 
   private static async initializeConnection() {
-    if (!this.authData) throw new Error("Missing initial configuration");
-    this.auth = await Authentication.init(this.authData);
+    if (!this.authData)
+      throw new Error(
+        "Missing authenticacion data, IolClient.config() must be called with user authentication data before instanciation."
+      );
+    await this.auth.authenticate(this.authData);
     this.classInstance.instance.interceptors.request.use(
       async (config) => await this.useAuth(config)
     );
