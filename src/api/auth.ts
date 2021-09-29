@@ -1,48 +1,62 @@
-import axios, { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios";
+import { constants, USERNAME, PASSWORD } from "../config";
+import HttpClient from "./http-client";
 
-interface AuthResponse {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-  refresh_token: string;
-  ".issued": string;
-  ".expires": string;
-  ".refreshexpires": string;
-}
+export default class Authentication extends HttpClient {
+  public accessToken: string = "";
+  private refreshToken: string = "";
+  private expirationDate: string = "";
 
-const authenticate = async (
-  username: string,
-  password: string,
-  apiUrl: string
-): Promise<AuthResponse> => {
-  const params = new URLSearchParams();
-  params.append("password", password);
-  params.append("username", username);
-  params.append("grant_type", "password");
-  const config: AxiosRequestConfig = {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  };
+  public constructor() {
+    super(constants.IOL_API_URL);
+  }
 
-  console.log("Requesting Authentication with: ", { params, config });
-  try {
-    const response = await axios.post<AuthResponse>(
-      `${apiUrl}/token`,
+  public async authenticate(authData: IolAuthData): Promise<void> {
+    const params = new URLSearchParams();
+    params.append("password", authData.password);
+    params.append("username", authData.username);
+    params.append("grant_type", "password");
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    };
+
+    console.log("Requesting Authentication with: ", { params, config });
+    const response = await this.instance.post<AuthResponse>(
+      `${constants.IOL_API_URL}/token`,
       params,
       config
     );
-    return response.data;
-  } catch (error: any) {
-    if (error.response) {
-      const errorResponse = {
-        status: error.response.status,
-        data: error.response.data,
-      };
-      console.log(JSON.stringify(errorResponse, null, 2));
-    }
-    throw error;
+    this.accessToken = response.access_token;
+    this.expirationDate = response[".expires"];
+    this.refreshToken = response.refresh_token;
   }
-};
 
-export { authenticate };
+  public async getNewToken(): Promise<void> {
+    const params = new URLSearchParams();
+    params.append("refresh_token", this.refreshToken);
+    params.append("grant_type", "refresh_token");
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    };
+
+    console.log("Requesting Authentication with: ", { params, config });
+    const response = await this.instance.post<AuthResponse>(
+      `${constants.IOL_API_URL}/token`,
+      params,
+      config
+    );
+    this.accessToken = response.access_token;
+    this.refreshToken = response.refresh_token;
+    this.expirationDate = response[".expires"];
+  }
+
+  public tokenExpired(): boolean {
+    const expiration = new Date(this.expirationDate);
+    const now = new Date();
+    return now > expiration;
+  }
+}
