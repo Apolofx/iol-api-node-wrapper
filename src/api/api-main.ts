@@ -72,6 +72,59 @@ export default class IolClient
     return operations;
   }
 
+  public async buy(data: Operar.Comprar) {
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await this.instance.post<GenericResponse>(
+      "/api/v2/operar/comprar",
+      data,
+      config
+    );
+    return response;
+  }
+  public async sell(data: Operar.Vender) {
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await this.instance.post<GenericResponse>(
+      "/api/v2/operar/vender",
+      data,
+      config
+    );
+    return response;
+  }
+  public async fciRescue(data: Operar.RescateFCI) {
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await this.instance.post<GenericResponse>(
+      "/api/v2/operar/rescate/fci",
+      data,
+      config
+    );
+    return response;
+  }
+  public async fciSubscription(data: Operar.SuscripcionFCI) {
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await this.instance.post<GenericResponse>(
+      "/api/v2/operar/suscripcion/fci",
+      data,
+      config
+    );
+    return response;
+  }
+
   private static async initializeConnection() {
     if (!this.authData)
       throw new Error(
