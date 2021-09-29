@@ -1,6 +1,17 @@
-require("dotenv").config();
-import { PASSWORD, USERNAME, API_URL } from "./config";
-import * as api from "./api";
-console.log(PASSWORD, USERNAME, API_URL);
+import dotenv from "dotenv";
+dotenv.config();
 
-api.authenticate(USERNAME, PASSWORD, API_URL);
+import { PASSWORD, USERNAME, API_URL } from "./config";
+import { IolConnection } from "./api";
+
+async function main() {
+  try {
+    IolConnection.config({ username: USERNAME, password: PASSWORD });
+    const iol = await IolConnection.getInstance();
+    iol.getAccountStatus();
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+main();
