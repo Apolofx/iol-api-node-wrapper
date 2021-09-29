@@ -1,3 +1,6 @@
+![version](https://img.shields.io/github/package-json/v/apolofx/iol-api-node-wrapper)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/apolofx/iol-api-node-wrapper/CI%20PROD/main)
+
 # IOL API NodeJS Wrapper [in development]
 
 ## Preqrequisites
