@@ -2,7 +2,7 @@ import HttpClient from "./http-client";
 import Authentication from "./auth";
 import { constants } from "../config/";
 import { AxiosRequestConfig } from "axios";
-
+const { endpoints } = constants;
 /**
  * Singleton approach in order to reuse same http instance across all files.
  *
@@ -34,28 +34,28 @@ export default class IolClient
   // ACCOUNT METHODS
   public async getAccountStatus() {
     const accountStatus = await this.instance.get<Cuenta.EstadoDeCuenta>(
-      "/api/v2/estadocuenta"
+      endpoints.v2.estadocuenta
     );
     return accountStatus;
   }
 
   public async getPortfolio(country: Country) {
     const portfolio = await this.instance.get<Cuenta.Portafolio>(
-      `/api/v2/portafolio/${country}`
+      `${endpoints.v2.portafolio}/${country}`
     );
     return portfolio;
   }
 
   public async deleteOperation(operationNumber: number) {
     const result = await this.instance.delete(
-      `/api/v2/operaciones/${operationNumber}`
+      `${endpoints.v2.operaciones}/${operationNumber}`
     );
     return result;
   }
 
   public async getOperation(operationNumber: number) {
     const operation = await this.instance.get<Cuenta.OperacionDetalle>(
-      `/api/v2/operaciones/${operationNumber}`
+      `${endpoints.v2.operaciones}/${operationNumber}`
     );
     return operation;
   }
@@ -66,7 +66,7 @@ export default class IolClient
       params.set(`filtro.${item[0]}`, item[1]);
     });
     const operations = await this.instance.get<Cuenta.Operaciones>(
-      "/api/v2/operaciones",
+      endpoints.v2.operaciones,
       { params }
     );
     return operations;
@@ -79,7 +79,7 @@ export default class IolClient
       },
     };
     const response = await this.instance.post<GenericResponse>(
-      "/api/v2/operar/comprar",
+      endpoints.v2.operar.comprar,
       data,
       config
     );
@@ -92,7 +92,7 @@ export default class IolClient
       },
     };
     const response = await this.instance.post<GenericResponse>(
-      "/api/v2/operar/vender",
+      endpoints.v2.operar.vender,
       data,
       config
     );
@@ -105,7 +105,7 @@ export default class IolClient
       },
     };
     const response = await this.instance.post<GenericResponse>(
-      "/api/v2/operar/rescate/fci",
+      endpoints.v2.operar.rescateFci,
       data,
       config
     );
@@ -118,7 +118,7 @@ export default class IolClient
       },
     };
     const response = await this.instance.post<GenericResponse>(
-      "/api/v2/operar/suscripcion/fci",
+      endpoints.v2.operar.suscripcionFci,
       data,
       config
     );
