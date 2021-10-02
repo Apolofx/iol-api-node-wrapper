@@ -22,9 +22,25 @@ interface OperationsFilter {
   pais: Country;
 }
 
+interface GenericResponse {
+  ok?: boolean;
+  messages?: Message[];
+}
+interface Message {
+  title?: string;
+  description?: string;
+}
+
 interface IolClientInterface {
   getAccountStatus(): Promise<Cuenta.EstadoDeCuenta>;
   getPortfolio(country: Country): Promise<Cuenta.Portafolio>;
   getOperations(filter: OperationsFilter): Promise<Cuenta.Operaciones>;
   getOperation(operationNumber: number): Promise<Cuenta.OperacionDetalle>;
+  buy(body: Operar.Comprar): Promise<GenericResponse>;
+  sell(body: Operar.Vender): Promise<GenericResponse>;
+  fciRescue(body: Operar.RescateFCI): Promise<GenericResponse>;
+  fciSubscription(body: Operar.SuscripcionFCI): Promise<GenericResponse>;
+  getAllFCI(): Promise<Titulos.FCI[]>;
+  getFCI(symbol: string): Promise<Titulos.FCI>;
+  getPrice(market: string, symbol: string): Promise<Titulos.Cotizacion>;
 }
