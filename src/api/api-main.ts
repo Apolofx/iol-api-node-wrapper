@@ -2,7 +2,8 @@ import HttpClient from "./http-client";
 import Authentication from "./auth";
 import { constants } from "../config/";
 import { AxiosRequestConfig } from "axios";
-
+import { endpoints } from "../config/constants";
+const { endpoints: api } = constants;
 /**
  * Singleton approach in order to reuse same http instance across all files.
  *
@@ -34,28 +35,28 @@ export default class IolClient
   // ACCOUNT METHODS
   public async getAccountStatus() {
     const accountStatus = await this.instance.get<Cuenta.EstadoDeCuenta>(
-      "/api/v2/estadocuenta"
+      api.v2.estadocuenta
     );
     return accountStatus;
   }
 
   public async getPortfolio(country: Country) {
     const portfolio = await this.instance.get<Cuenta.Portafolio>(
-      `/api/v2/portafolio/${country}`
+      `${api.v2.portafolio}/${country}`
     );
     return portfolio;
   }
 
   public async deleteOperation(operationNumber: number) {
-    const result = await this.instance.delete(
-      `/api/v2/operaciones/${operationNumber}`
+    const result = await this.instance.delete<GenericResponse>(
+      `${api.v2.operaciones}/${operationNumber}`
     );
     return result;
   }
 
   public async getOperation(operationNumber: number) {
     const operation = await this.instance.get<Cuenta.OperacionDetalle>(
-      `/api/v2/operaciones/${operationNumber}`
+      `${api.v2.operaciones}/${operationNumber}`
     );
     return operation;
   }
@@ -66,10 +67,84 @@ export default class IolClient
       params.set(`filtro.${item[0]}`, item[1]);
     });
     const operations = await this.instance.get<Cuenta.Operaciones>(
-      "/api/v2/operaciones",
+      api.v2.operaciones,
       { params }
     );
     return operations;
+  }
+
+  public async buy(data: Operar.Comprar) {
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await this.instance.post<GenericResponse>(
+      api.v2.operar.comprar,
+      data,
+      config
+    );
+    return response;
+  }
+  public async sell(data: Operar.Vender) {
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await this.instance.post<GenericResponse>(
+      api.v2.operar.vender,
+      data,
+      config
+    );
+    return response;
+  }
+  public async fciRescue(data: Operar.RescateFCI) {
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await this.instance.post<GenericResponse>(
+      api.v2.operar.rescateFci,
+      data,
+      config
+    );
+    return response;
+  }
+  public async fciSubscription(data: Operar.SuscripcionFCI) {
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await this.instance.post<GenericResponse>(
+      api.v2.operar.suscripcionFci,
+      data,
+      config
+    );
+    return response;
+  }
+
+  public async getAllFCI() {
+    const response = await this.instance.get<Titulos.FCI[]>(
+      endpoints.v2.titulos.fci
+    );
+    return response;
+  }
+
+  public async getFCI(symbol: string) {
+    const response = await this.instance.get<Titulos.FCI>(
+      `${endpoints.v2.titulos.fci}/${symbol}`
+    );
+    return response;
+  }
+
+  public async getPrice(market: string, symbol: string) {
+    const response = await this.instance.get<Titulos.Cotizacion>(
+      endpoints.v2.titulos.cotizacion(market, symbol)
+    );
+    return response;
   }
 
   private static async initializeConnection() {

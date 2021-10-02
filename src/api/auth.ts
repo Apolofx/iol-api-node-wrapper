@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from "axios";
-import { constants, USERNAME, PASSWORD } from "../config";
+import { constants } from "../config";
 import HttpClient from "./http-client";
 
 export default class Authentication extends HttpClient {
@@ -28,6 +28,7 @@ export default class Authentication extends HttpClient {
       params,
       config
     );
+    console.log("Successfully authenticated: ", response);
     this.accessToken = response.access_token;
     this.expirationDate = response[".expires"];
     this.refreshToken = response.refresh_token;
@@ -49,6 +50,7 @@ export default class Authentication extends HttpClient {
       params,
       config
     );
+    console.log(response);
     this.accessToken = response.access_token;
     this.refreshToken = response.refresh_token;
     this.expirationDate = response[".expires"];

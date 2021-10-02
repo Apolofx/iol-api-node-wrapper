@@ -1,4 +1,4 @@
-export const API_URL = required("IOL_API_URL", process.env.IOL_API_URL);
+export const API_URL = process.env.IOL_API_URL;
 export const PASSWORD = required("IOL_PASSWORD", process.env.IOL_PASSWORD);
 export const USERNAME = required("IOL_USERNAME", process.env.IOL_USERNAME);
 

@@ -26,6 +26,66 @@
 4. Initialize IolClient on `src/index` with `IolClient.config() using your usr and psw.
 5. run `yarn dev`
 
+## Api wrapper progress
+
+[ API VERSION: V2 ]
+
+### AsesoresTestInversor
+
+- [ ] `GET /api/v2/asesores/test-inversor`
+
+- [ ] `POST /api/v2/asesores/test-inversor/{idClienteAsesorado}`
+
+### MiCuenta
+
+- [x] `GET /api/v2/estadocuenta`
+
+- [x] `GET /api/v2/portafolio/{pais}`
+
+- [x] `DELETE /api/v2/operaciones/{numero}`
+
+- [x] `GET /api/v2/operaciones/{numero}`
+
+- [x] `GET /api/v2/operaciones`
+
+### Operar
+
+- [x] `POST /api/v2/operar/Vender`
+
+- [x] `POST /api/v2/operar/Comprar`
+
+- [x] `POST /api/v2/operar/rescate/fci`
+
+- [x] `POST /api/v2/operar/suscripcion/fci`
+
+### Titulos
+
+- [x] `GET /api/v2/Titulos/FCI`
+
+- [ ] `GET /api/v2/Titulos/FCI/{simbolo}`
+
+- [ ] `GET /api/v2/Titulos/FCI/TipoFondos`
+
+- [ ] `GET /api/v2/Titulos/FCI/Administradoras`
+
+- [ ] `GET /api/v2/{mercado}/Titulos/{simbolo}`
+
+- [ ] `GET /api/v2/{mercado}/Titulos/{simbolo}/Opciones`
+
+- [ ] `GET /api/v2/{pais}/Titulos/Cotizacion/Instrumentos`
+
+- [ ] `GET /api/v2/Cotizaciones/{Instrumento}/{Panel}/{Pais}`
+
+- [ ] `GET /api/v2/{pais}/Titulos/Cotizacion/Paneles/{instrumento}`
+
+- [x] `GET /api/v2/{Mercado}/Titulos/{Simbolo}/Cotizacion`
+
+- [ ] `GET /api/v2/Titulos/FCI/Administradoras/{administradora}/TipoFondos`
+
+- [ ] `GET /api/v2/Titulos/FCI/Administradoras/{administradora}/TipoFondos/{tipoFondo}`
+
+- [ ] `GET /api/v2/{mercado}/Titulos/{simbolo}/Cotizacion/seriehistorica/{fechaDesde}/{fechaHasta}/{ajustada}`
+
 ## Ignore this
 
 1. `gh repo create <name>`

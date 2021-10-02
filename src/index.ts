@@ -8,7 +8,7 @@ async function main() {
   try {
     IolConnection.config({ username: USERNAME, password: PASSWORD });
     const iol = await IolConnection.getInstance();
-    iol.getAccountStatus();
+    await iol.getAccountStatus();
   } catch (e) {
     console.log(e);
   }
