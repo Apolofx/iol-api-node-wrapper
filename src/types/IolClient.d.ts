@@ -40,4 +40,7 @@ interface IolClientInterface {
   sell(body: Operar.Vender): Promise<GenericResponse>;
   fciRescue(body: Operar.RescateFCI): Promise<GenericResponse>;
   fciSubscription(body: Operar.SuscripcionFCI): Promise<GenericResponse>;
+  getAllFCI(): Promise<Titulos.FCI[]>;
+  getFCI(symbol: string): Promise<Titulos.FCI>;
+  getPrice(market: string, symbol: string): Promise<Titulos.Cotizacion>;
 }
