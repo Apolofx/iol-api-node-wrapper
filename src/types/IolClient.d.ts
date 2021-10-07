@@ -9,6 +9,7 @@ interface AuthResponse {
 }
 
 interface IolAuthData {
+  url: string;
   password: string;
   username: string;
 }

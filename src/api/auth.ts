@@ -1,5 +1,4 @@
 import { AxiosRequestConfig } from "axios";
-import { constants } from "../config";
 import HttpClient from "./http-client";
 
 export default class Authentication extends HttpClient {
@@ -7,8 +6,8 @@ export default class Authentication extends HttpClient {
   private refreshToken: string = "";
   private expirationDate: string = "";
 
-  public constructor() {
-    super(constants.IOL_API_URL);
+  public constructor(apiURL: string) {
+    super(apiURL);
   }
 
   public async authenticate(authData: IolAuthData): Promise<void> {
@@ -16,6 +15,7 @@ export default class Authentication extends HttpClient {
     params.append("password", authData.password);
     params.append("username", authData.username);
     params.append("grant_type", "password");
+    const baseURL = this.instance.defaults.baseURL;
     const config: AxiosRequestConfig = {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -24,7 +24,7 @@ export default class Authentication extends HttpClient {
 
     console.log("Requesting Authentication with: ", { params, config });
     const response = await this.instance.post<AuthResponse>(
-      `${constants.IOL_API_URL}/token`,
+      `${baseURL}/token`,
       params,
       config
     );
@@ -38,6 +38,7 @@ export default class Authentication extends HttpClient {
     const params = new URLSearchParams();
     params.append("refresh_token", this.refreshToken);
     params.append("grant_type", "refresh_token");
+    const baseURL = this.instance.defaults.baseURL;
     const config: AxiosRequestConfig = {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -46,7 +47,7 @@ export default class Authentication extends HttpClient {
 
     console.log("Requesting Authentication with: ", { params, config });
     const response = await this.instance.post<AuthResponse>(
-      `${constants.IOL_API_URL}/token`,
+      `${baseURL}/token`,
       params,
       config
     );

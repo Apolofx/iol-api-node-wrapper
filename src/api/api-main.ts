@@ -13,7 +13,7 @@ export default class IolClient
   implements IolClientInterface
 {
   private static classInstance: IolClient;
-  private static auth = new Authentication();
+  private static auth: Authentication;
   private static authData: IolAuthData;
 
   private constructor() {
@@ -23,6 +23,7 @@ export default class IolClient
   public static async getInstance() {
     if (!this.classInstance) {
       this.classInstance = new IolClient();
+      this.auth = await new Authentication(this.authData.url);
       await this.initializeConnection();
     }
     return this.classInstance;
