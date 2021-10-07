@@ -20,6 +20,12 @@ export default class IolClient
     super(constants.IOL_API_URL);
   }
 
+  //Must be ran first in order to initialize singleton
+  public static config(config: IolAuthData) {
+    this.authData = config;
+  }
+
+  //Gets current instance or creates one if not created yet
   public static async getInstance() {
     if (!this.classInstance) {
       this.classInstance = new IolClient();
@@ -27,10 +33,6 @@ export default class IolClient
       await this.initializeConnection();
     }
     return this.classInstance;
-  }
-
-  public static config(config: IolAuthData) {
-    this.authData = config;
   }
 
   // ACCOUNT METHODS
@@ -74,6 +76,7 @@ export default class IolClient
     return operations;
   }
 
+  // OPERATORY METHODS
   public async buy(data: Operar.Comprar) {
     const config: AxiosRequestConfig = {
       headers: {
@@ -127,6 +130,7 @@ export default class IolClient
     return response;
   }
 
+  // GET TITLES
   public async getAllFCI() {
     const response = await this.instance.get<Titulos.FCI[]>(
       endpoints.v2.titulos.fci
