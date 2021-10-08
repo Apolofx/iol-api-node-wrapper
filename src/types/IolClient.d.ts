@@ -14,6 +14,7 @@ interface IolAuthData {
   username: string;
 }
 
+type Mercado = "bCBA" | "nYSE" | "nASDAQ" | "aMEX" | "bCS" | "rOFX";
 type Country = "argentina" | "estados_Unidos";
 interface OperationsFilter {
   numero: number;
@@ -43,5 +44,5 @@ interface IolClientInterface {
   fciSubscription(body: Operar.SuscripcionFCI): Promise<GenericResponse>;
   getAllFCI(): Promise<Titulos.FCI[]>;
   getFCI(symbol: string): Promise<Titulos.FCI>;
-  getPrice(market: string, symbol: string): Promise<Titulos.Cotizacion>;
+  getPrice(market: Mercado, symbol: string): Promise<Titulos.Cotizacion>;
 }
