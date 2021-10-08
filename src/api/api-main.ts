@@ -16,23 +16,25 @@ export default class IolClient
   private static auth: Authentication;
   private static authData: IolAuthData;
 
-  private constructor() {
-    super(constants.IOL_API_URL);
+  private constructor(authData: IolAuthData) {
+    super(authData.url);
+    IolClient.auth = new Authentication(authData.url);
   }
 
-  //Must be ran first in order to initialize singleton
-  public static config(config: IolAuthData) {
-    this.authData = config;
-  }
-
-  //Gets current instance or creates one if not created yet
   public static async getInstance() {
+    if (!this.authData)
+      throw new Error(
+        "Missing authenticacion data, IolClient.config() must be called with user authentication data before calling getInstance()."
+      );
     if (!this.classInstance) {
-      this.classInstance = new IolClient();
-      this.auth = await new Authentication(this.authData.url);
+      this.classInstance = new IolClient(this.authData);
       await this.initializeConnection();
     }
     return this.classInstance;
+  }
+
+  public static config(config: IolAuthData) {
+    this.authData = config;
   }
 
   // ACCOUNT METHODS
@@ -76,7 +78,6 @@ export default class IolClient
     return operations;
   }
 
-  // OPERATORY METHODS
   public async buy(data: Operar.Comprar) {
     const config: AxiosRequestConfig = {
       headers: {
@@ -130,7 +131,6 @@ export default class IolClient
     return response;
   }
 
-  // GET TITLES
   public async getAllFCI() {
     const response = await this.instance.get<Titulos.FCI[]>(
       endpoints.v2.titulos.fci
@@ -145,7 +145,7 @@ export default class IolClient
     return response;
   }
 
-  public async getPrice(market: string, symbol: string) {
+  public async getPrice(market: Mercado, symbol: string) {
     const response = await this.instance.get<Titulos.Cotizacion>(
       endpoints.v2.titulos.cotizacion(market, symbol)
     );
@@ -153,10 +153,6 @@ export default class IolClient
   }
 
   private static async initializeConnection() {
-    if (!this.authData)
-      throw new Error(
-        "Missing authenticacion data, IolClient.config() must be called with user authentication data before instanciation."
-      );
     await this.auth.authenticate(this.authData);
     this.classInstance.instance.interceptors.request.use(
       async (config) => await this.useAuth(config)
