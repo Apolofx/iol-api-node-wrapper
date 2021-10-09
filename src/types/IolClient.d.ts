@@ -1,4 +1,8 @@
-interface AuthResponse {
+import { Cuenta } from "./IolApiCuenta";
+import { Titulos } from "./IolApiTitulos";
+import { Operar } from "./IolApiOperar";
+
+export interface AuthResponse {
   access_token: string;
   token_type: string;
   expires_in: number;
@@ -8,15 +12,15 @@ interface AuthResponse {
   ".refreshexpires": string;
 }
 
-interface IolAuthData {
+export interface IolAuthData {
   url: string;
   password: string;
   username: string;
 }
 
-type Mercado = "bCBA" | "nYSE" | "nASDAQ" | "aMEX" | "bCS" | "rOFX";
-type Country = "argentina" | "estados_Unidos";
-interface OperationsFilter {
+export type Mercado = "bCBA" | "nYSE" | "nASDAQ" | "aMEX" | "bCS" | "rOFX";
+export type Country = "argentina" | "estados_Unidos";
+export interface OperationsFilter {
   numero: number;
   estado: "todas" | "pendientes" | "terminadas" | "canceladas";
   fechaDesde: Date;
@@ -24,16 +28,16 @@ interface OperationsFilter {
   pais: Country;
 }
 
-interface GenericResponse {
+export interface GenericResponse {
   ok?: boolean;
   messages?: Message[];
 }
-interface Message {
+export interface Message {
   title?: string;
   description?: string;
 }
 
-interface IolClientInterface {
+export interface IolClientInterface {
   getAccountStatus(): Promise<Cuenta.EstadoDeCuenta>;
   getPortfolio(country: Country): Promise<Cuenta.Portafolio>;
   getOperations(filter: OperationsFilter): Promise<Cuenta.Operaciones>;

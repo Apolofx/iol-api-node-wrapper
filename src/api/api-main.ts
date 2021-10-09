@@ -3,6 +3,17 @@ import Authentication from "./auth";
 import { constants } from "../config/";
 import { AxiosRequestConfig } from "axios";
 import { endpoints } from "../config/constants";
+import { Cuenta } from "../types/IolApiCuenta";
+import { Titulos } from "../types/IolApiTitulos";
+import { Operar } from "../types/IolApiOperar";
+import {
+  Mercado,
+  IolAuthData,
+  Country,
+  GenericResponse,
+  IolClientInterface,
+  OperationsFilter,
+} from "../types/IolClient";
 const { endpoints: api } = constants;
 /**
  * Singleton approach in order to reuse same http instance across all files.

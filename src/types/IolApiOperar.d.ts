@@ -1,4 +1,4 @@
-declare namespace Operar {
+export namespace Operar {
   type Mercado = "bCBA" | "nYSE" | "nASDAQ" | "aMEX" | "bCS" | "rOFX";
   interface Vender {
     mercado: Mercado;

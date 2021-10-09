@@ -1,5 +1,6 @@
 import { AxiosRequestConfig } from "axios";
 import HttpClient from "./http-client";
+import { IolAuthData, AuthResponse } from "../types/IolClient";
 
 export default class Authentication extends HttpClient {
   public accessToken: string = "";

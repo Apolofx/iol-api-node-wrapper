@@ -1,4 +1,4 @@
-declare namespace Titulos {
+export namespace Titulos {
   interface FCI {
     variacion?: number;
     ultimoOperado?: number;
