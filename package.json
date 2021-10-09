@@ -1,14 +1,18 @@
 {
   "name": "iol-api-node-wrapper",
-  "version": "0.0.2",
+  "version": "0.1.0-beta.0",
   "description": "Node Library to wrap Invertir Online API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "jest --passWithNoTests",
-    "dev": "ts-node ./src/index.ts",
+    "dev": "ts-node ./src/smoke.ts",
     "prebuild": "rm -rf dist",
     "build": "tsc",
+    "postbuild": "cp -r ./src/types ./dist/types",
     "prepare": "husky install"
   },
   "repository": {
@@ -39,8 +43,7 @@
     "typescript": "^4.4.3"
   },
   "dependencies": {
-    "axios": "^0.21.4",
-    "dotenv": "^10.0.0"
+    "axios": "^0.21.4"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"

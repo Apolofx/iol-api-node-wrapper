@@ -30,12 +30,8 @@ export default abstract class HttpClient {
           data: error.response.data,
           status: error.response.status,
         };
-        console.log(formatedError);
       } else if (error.request) {
         formatedError = { message: error.message, code: error.code };
-        console.log(formatedError);
-      } else {
-        console.log(error.message);
       }
     }
     throw formatedError;

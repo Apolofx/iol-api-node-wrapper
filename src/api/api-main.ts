@@ -3,6 +3,17 @@ import Authentication from "./auth";
 import { constants } from "../config/";
 import { AxiosRequestConfig } from "axios";
 import { endpoints } from "../config/constants";
+import { Cuenta } from "../types/IolApiCuenta";
+import { Titulos } from "../types/IolApiTitulos";
+import { Operar } from "../types/IolApiOperar";
+import {
+  Mercado,
+  IolAuthData,
+  Country,
+  GenericResponse,
+  IolClientInterface,
+  OperationsFilter,
+} from "../types/IolClient";
 const { endpoints: api } = constants;
 /**
  * Singleton approach in order to reuse same http instance across all files.
@@ -13,16 +24,21 @@ export default class IolClient
   implements IolClientInterface
 {
   private static classInstance: IolClient;
-  private static auth = new Authentication();
+  private static auth: Authentication;
   private static authData: IolAuthData;
 
-  private constructor() {
-    super(constants.IOL_API_URL);
+  private constructor(authData: IolAuthData) {
+    super(authData.url);
+    IolClient.auth = new Authentication(authData.url);
   }
 
   public static async getInstance() {
+    if (!this.authData)
+      throw new Error(
+        "Missing authenticacion data, IolClient.config() must be called with user authentication data before calling getInstance()."
+      );
     if (!this.classInstance) {
-      this.classInstance = new IolClient();
+      this.classInstance = new IolClient(this.authData);
       await this.initializeConnection();
     }
     return this.classInstance;
@@ -140,7 +156,7 @@ export default class IolClient
     return response;
   }
 
-  public async getPrice(market: string, symbol: string) {
+  public async getPrice(market: Mercado, symbol: string) {
     const response = await this.instance.get<Titulos.Cotizacion>(
       endpoints.v2.titulos.cotizacion(market, symbol)
     );
@@ -148,10 +164,6 @@ export default class IolClient
   }
 
   private static async initializeConnection() {
-    if (!this.authData)
-      throw new Error(
-        "Missing authenticacion data, IolClient.config() must be called with user authentication data before instanciation."
-      );
     await this.auth.authenticate(this.authData);
     this.classInstance.instance.interceptors.request.use(
       async (config) => await this.useAuth(config)

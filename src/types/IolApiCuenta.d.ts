@@ -1,4 +1,4 @@
-declare namespace Cuenta {
+export namespace Cuenta {
   interface Saldo {
     liquidacion: string;
     saldo: number;
