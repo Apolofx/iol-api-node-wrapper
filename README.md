@@ -1,5 +1,7 @@
 ![version](https://img.shields.io/github/package-json/v/apolofx/iol-api-node-wrapper?color=blue)
+[![npm version](https://badge.fury.io/js/iol-api-node-wrapper.svg)](https://badge.fury.io/js/iol-api-node-wrapper)
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/apolofx/iol-api-node-wrapper/CI%20PROD/main)
+![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label)
 
 # IOL API NodeJS Wrapper [work in progress]
 
@@ -9,28 +11,33 @@
 2. [Have access to IOL API](https://www.invertironline.com/api/documentacion-api).
 3. NodeJS installed
 
-## Initial Setup
+## Installation
 
-1. Create `.env` with the following:
+- npm: `npm i iol-api-node-wrapper@beta`
+- yarn: `yarn add iol-api-node-wrapper@beta`
 
-   ```
-   IOL_USERNAME=<your IOL account username>
-   IOL_PASSWORD=<your IOL account password>
-   ```
+## Usage example
 
-   Optionally you can hardcode your `username` and `password` on IolClient's config method (only for testing purposes).
+```typescript
+const { IolClient } = require("iol-api-node-wrapper");
+// Initialize client config
+IolClient.config({
+  url: "https://api.invertironline.com",
+  password: <your IOL password>,
+  username: <your IOL username>,
+});
+async function main(){
+    const iol = await IolClient.getInstance()
+    const account = await iol.getAccountStatus()
+    console.log(account)
+}
 
-## Usage
-
-1. Clone repo.
-2. `cd` to repo dir.
-3. run `yarn` or `npm install`
-4. Initialize IolClient on `src/index` with `IolClient.config() using your usr and psw.
-5. run `yarn dev`
+main()
+```
 
 ## Api wrapper progress
 
-[ API VERSION: V2 ]
+[ IOL API VERSION: V2 ]
 
 ### AsesoresTestInversor
 
@@ -87,11 +94,3 @@
 ⬜️ `GET /api/v2/Titulos/FCI/Administradoras/{administradora}/TipoFondos/{tipoFondo}`
 
 ⬜️ `GET /api/v2/{mercado}/Titulos/{simbolo}/Cotizacion/seriehistorica/{fechaDesde}/{fechaHasta}/{ajustada}`
-
-## Ignore this
-
-1. `gh repo create <name>`
-2. Init Node project Typescript https://dev.to/rajat19/create-a-new-node-js-project-in-typescript-nao
-3. Configure test env with jest:
-   - yarn add -D jest @types/jest ts-jest
-   - npx ts-jest config:init
