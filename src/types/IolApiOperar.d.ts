@@ -5,7 +5,7 @@ export namespace Operar {
     simbolo: string;
     cantidad: number;
     precio: number;
-    validez: string;
+    validez: Date;
     tipoOrden?: "precioLimite" | "precioMercado";
     plazo?: "t0" | "t1" | "t2";
   }
