@@ -13,8 +13,17 @@
 
 ## Installation
 
-- npm: `npm i iol-api-node-wrapper@beta`
-- yarn: `yarn add iol-api-node-wrapper@beta`
+**npm**
+
+```shell
+npm i iol-api-node-wrapper@beta
+```
+
+**yarn**
+
+```shell
+yarn add iol-api-node-wrapper@beta
+```
 
 ## Usage example
 
