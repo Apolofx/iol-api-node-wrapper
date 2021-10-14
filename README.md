@@ -13,8 +13,17 @@
 
 ## Installation
 
-- npm: `npm i iol-api-node-wrapper@beta`
-- yarn: `yarn add iol-api-node-wrapper@beta`
+**npm**
+
+```shell
+npm i iol-api-node-wrapper@beta
+```
+
+**yarn**
+
+```shell
+yarn add iol-api-node-wrapper@beta
+```
 
 ## Usage example
 
@@ -61,8 +70,8 @@ await iol.getAccountStatus(); // GET /api/v2/estadocuenta
 await iol.getOperation(1234); // GET /api/v2/operaciones/{numero}
 await iol.getOperations({
   estado: "pendientes",
-  fechaDesde: new Date(new Date().setDate(10)),
-  fechaHasta: new Date(new Date().setDate(15)),
+  fechaDesde: new Date(new Date().setDate(10)).toString(),
+  fechaHasta: new Date(new Date().setDate(15)).toString(),
   numero: 1234,
   pais: "argentina",
 }); // GET /api/v2/operaciones
