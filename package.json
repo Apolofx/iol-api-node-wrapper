@@ -1,6 +1,6 @@
 {
   "name": "iol-api-node-wrapper",
-  "version": "0.1.1-beta.1",
+  "version": "v0.1.1",
   "description": "Node Library to wrap Invertir Online API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "test": "jest --passWithNoTests",
-    "dev": "ts-node ./src/smoke.ts",
+    "dev": "ts-node ./local/index.ts",
     "prebuild": "rm -rf dist",
     "build": "tsc",
     "postbuild": "cp -r ./src/types ./dist/types",
