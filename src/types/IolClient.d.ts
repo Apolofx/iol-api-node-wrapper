@@ -23,8 +23,8 @@ export type Country = "argentina" | "estados_Unidos";
 export interface OperationsFilter {
   numero: number;
   estado: "todas" | "pendientes" | "terminadas" | "canceladas";
-  fechaDesde: Date;
-  fechaHasta: Date;
+  fechaDesde: string | Date;
+  fechaHasta: string | Date;
   pais: Country;
 }
 
