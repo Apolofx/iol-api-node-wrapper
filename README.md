@@ -49,7 +49,7 @@ main();
 
 ## Authentication
 
-Once the `config` method has been called with required data, authentication is managed internally by the library and there is no need to request a new `access-token` every time you call the API. IolClient uses IOL's `refresh-token` to request a new `access-token` if the current one has expired.
+Once a new IolClient object has been instantiated with authentication data, authentication is managed internally by the library and there is no need to request a new `access-token` every time you call the API. IolClient uses IOL's `refresh-token` to request a new `access-token` if the current one has expired.
 
 ## Types
 
