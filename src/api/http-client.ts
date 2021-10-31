@@ -5,15 +5,15 @@ declare module "axios" {
 }
 
 export default abstract class HttpClient {
-  protected readonly instance: AxiosInstance;
+  protected readonly httpInstance: AxiosInstance;
 
   public constructor(baseURL: string) {
-    this.instance = axios.create({ baseURL });
+    this.httpInstance = axios.create({ baseURL });
     this.initializeInterceptors();
   }
 
   private initializeInterceptors() {
-    this.instance.interceptors.response.use(
+    this.httpInstance.interceptors.response.use(
       this.handleResponse,
       this.handleErrors
     );
