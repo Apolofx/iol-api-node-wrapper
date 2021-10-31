@@ -15,63 +15,43 @@ import {
   OperationsFilter,
 } from "../types/IolClient";
 const { endpoints: api } = constants;
-/**
- * Singleton approach in order to reuse same http instance across all files.
- *
- */
 export default class IolClient
   extends HttpClient
   implements IolClientInterface
 {
-  private static classInstance: IolClient;
-  private static auth: Authentication;
-  private static authData: IolAuthData;
+  private auth: Authentication;
 
-  private constructor(authData: IolAuthData) {
+  public constructor(authData: IolAuthData) {
+    if (!authData) throw new Error("Missing authenticacion data");
     super(authData.url);
-    IolClient.auth = new Authentication(authData.url);
-  }
-
-  public static async getInstance() {
-    if (!this.authData)
-      throw new Error(
-        "Missing authenticacion data, IolClient.config() must be called with user authentication data before calling getInstance()."
-      );
-    if (!this.classInstance) {
-      this.classInstance = new IolClient(this.authData);
-      await this.initializeConnection();
-    }
-    return this.classInstance;
-  }
-
-  public static config(config: IolAuthData) {
-    this.authData = config;
+    this.auth = new Authentication(authData);
+    this.initializeConnection();
   }
 
   // ACCOUNT METHODS
   public async getAccountStatus() {
-    const accountStatus = await this.instance.get<Cuenta.EstadoDeCuenta>(
+    const accountStatus = await this.httpInstance.get<Cuenta.EstadoDeCuenta>(
       api.v2.estadocuenta
     );
     return accountStatus;
   }
 
   public async getPortfolio(country: Country) {
-    const portfolio = await this.instance.get<Cuenta.Portafolio>(
+    const portfolio = await this.httpInstance.get<Cuenta.Portafolio>(
       `${api.v2.portafolio}/${country}`
     );
     return portfolio;
   }
 
   public async deleteOperation(operationNumber: number) {
-    const result = await this.instance.delete<GenericResponse>(
+    const result = await this.httpInstance.delete<GenericResponse>(
       `${api.v2.operaciones}/${operationNumber}`
     );
     return result;
   }
 
   public async getOperation(operationNumber: number) {
-    const operation = await this.instance.get<Cuenta.OperacionDetalle>(
+    const operation = await this.httpInstance.get<Cuenta.OperacionDetalle>(
       `${api.v2.operaciones}/${operationNumber}`
     );
     return operation;
@@ -82,7 +62,7 @@ export default class IolClient
     Object.entries(filters).forEach((item) => {
       params.set(`filtro.${item[0]}`, item[1]);
     });
-    const operations = await this.instance.get<Cuenta.Operaciones>(
+    const operations = await this.httpInstance.get<Cuenta.Operaciones>(
       api.v2.operaciones,
       { params }
     );
@@ -95,7 +75,7 @@ export default class IolClient
         "Content-Type": "application/json",
       },
     };
-    const response = await this.instance.post<GenericResponse>(
+    const response = await this.httpInstance.post<GenericResponse>(
       api.v2.operar.comprar,
       data,
       config
@@ -108,7 +88,7 @@ export default class IolClient
         "Content-Type": "application/json",
       },
     };
-    const response = await this.instance.post<GenericResponse>(
+    const response = await this.httpInstance.post<GenericResponse>(
       api.v2.operar.vender,
       data,
       config
@@ -121,7 +101,7 @@ export default class IolClient
         "Content-Type": "application/json",
       },
     };
-    const response = await this.instance.post<GenericResponse>(
+    const response = await this.httpInstance.post<GenericResponse>(
       api.v2.operar.rescateFci,
       data,
       config
@@ -134,7 +114,7 @@ export default class IolClient
         "Content-Type": "application/json",
       },
     };
-    const response = await this.instance.post<GenericResponse>(
+    const response = await this.httpInstance.post<GenericResponse>(
       api.v2.operar.suscripcionFci,
       data,
       config
@@ -143,40 +123,39 @@ export default class IolClient
   }
 
   public async getAllFCI() {
-    const response = await this.instance.get<Titulos.FCI[]>(
+    const response = await this.httpInstance.get<Titulos.FCI[]>(
       endpoints.v2.titulos.fci
     );
     return response;
   }
 
   public async getFCI(symbol: string) {
-    const response = await this.instance.get<Titulos.FCI>(
+    const response = await this.httpInstance.get<Titulos.FCI>(
       `${endpoints.v2.titulos.fci}/${symbol}`
     );
     return response;
   }
 
   public async getPrice(market: Mercado, symbol: string) {
-    const response = await this.instance.get<Titulos.Cotizacion>(
+    const response = await this.httpInstance.get<Titulos.Cotizacion>(
       endpoints.v2.titulos.cotizacion(market, symbol)
     );
     return response;
   }
 
-  private static async initializeConnection() {
-    await this.auth.authenticate(this.authData);
-    this.classInstance.instance.interceptors.request.use(
-      async (config) => await this.useAuth(config)
+  private initializeConnection() {
+    this.httpInstance.interceptors.request.use(
+      async (requestConfig) => await this.useAuth(requestConfig)
     );
   }
 
-  private static async useAuth(
-    config: AxiosRequestConfig
+  //TODO check the latency introduced by the useAuth requests middleware
+  private async useAuth(
+    requestConfig: AxiosRequestConfig
   ): Promise<AxiosRequestConfig> {
-    if (this.auth.tokenExpired()) {
-      await this.auth.getNewToken();
-    }
-    config.headers["Authorization"] = `bearer ${this.auth.accessToken}`;
-    return config;
+    const newToken = await this.auth.getToken();
+    requestConfig.headers["Authorization"] = `bearer ${newToken}`;
+    console.log(requestConfig);
+    return requestConfig;
   }
 }

@@ -4,19 +4,22 @@ import { IolAuthData, AuthResponse } from "../types/IolClient";
 
 export default class Authentication extends HttpClient {
   public accessToken: string = "";
+  private authData: IolAuthData;
   private refreshToken: string = "";
   private expirationDate: string = "";
+  private refreshTokenExpiration: string = "";
 
-  public constructor(apiURL: string) {
-    super(apiURL);
+  public constructor(authData: IolAuthData) {
+    super(authData.url);
+    this.authData = authData;
   }
 
-  public async authenticate(authData: IolAuthData): Promise<void> {
+  private async authenticate(): Promise<void> {
     const params = new URLSearchParams();
-    params.append("password", authData.password);
-    params.append("username", authData.username);
+    params.append("password", this.authData.password);
+    params.append("username", this.authData.username);
     params.append("grant_type", "password");
-    const baseURL = this.instance.defaults.baseURL;
+    const baseURL = this.httpInstance.defaults.baseURL;
     const config: AxiosRequestConfig = {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -24,43 +27,69 @@ export default class Authentication extends HttpClient {
     };
 
     console.log("Requesting Authentication with: ", { params, config });
-    const response = await this.instance.post<AuthResponse>(
+    const response = await this.httpInstance.post<AuthResponse>(
       `${baseURL}/token`,
       params,
       config
     );
     console.log("Successfully authenticated: ", response);
-    this.accessToken = response.access_token;
-    this.expirationDate = response[".expires"];
-    this.refreshToken = response.refresh_token;
+    this.setAuthResponse(response);
   }
 
-  public async getNewToken(): Promise<void> {
+  private async getNewToken(): Promise<string> {
     const params = new URLSearchParams();
     params.append("refresh_token", this.refreshToken);
     params.append("grant_type", "refresh_token");
-    const baseURL = this.instance.defaults.baseURL;
+    const baseURL = this.httpInstance.defaults.baseURL;
     const config: AxiosRequestConfig = {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
     };
 
-    console.log("Requesting Authentication with: ", { params, config });
-    const response = await this.instance.post<AuthResponse>(
+    console.log("Requesting new token: ", { params, config });
+    const response = await this.httpInstance.post<AuthResponse>(
       `${baseURL}/token`,
       params,
       config
     );
     console.log(response);
-    this.accessToken = response.access_token;
-    this.refreshToken = response.refresh_token;
-    this.expirationDate = response[".expires"];
+    this.setAuthResponse(response);
+    return this.accessToken;
   }
 
-  public tokenExpired(): boolean {
+  private tokenExpired(): boolean {
+    console.log("checking token expiration");
     const expiration = new Date(this.expirationDate);
     const now = new Date();
     return now > expiration;
+  }
+
+  private refreshTokenExpired(): boolean {
+    console.log("checking refresh token expiration");
+    const expiration = new Date(this.refreshTokenExpiration);
+    const now = new Date();
+    return now > expiration;
+  }
+
+  private setAuthResponse(response: AuthResponse): void {
+    this.accessToken = response.access_token;
+    this.refreshToken = response.refresh_token;
+    this.expirationDate = response[".expires"];
+    this.refreshTokenExpiration = response[".refreshexpires"];
+  }
+
+  public async getToken(): Promise<string> {
+    if (!this.accessToken) {
+      await this.authenticate();
+    }
+    if (this.tokenExpired()) {
+      if (this.refreshTokenExpired()) {
+        await this.authenticate();
+      } else {
+        await this.getNewToken();
+      }
+    }
+    return this.accessToken;
   }
 }
