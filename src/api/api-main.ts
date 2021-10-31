@@ -15,37 +15,17 @@ import {
   OperationsFilter,
 } from "../types/IolClient";
 const { endpoints: api } = constants;
-/**
- * Singleton approach in order to reuse same http httpInstance across all files.
- *
- */
 export default class IolClient
   extends HttpClient
   implements IolClientInterface
 {
-  private static classInstance: IolClient;
-  private static auth: Authentication;
-  private static authData: IolAuthData;
+  private auth: Authentication;
 
-  private constructor(authData: IolAuthData) {
+  public constructor(authData: IolAuthData) {
+    if (!authData) throw new Error("Missing authenticacion data");
     super(authData.url);
-    IolClient.auth = new Authentication(authData);
-  }
-
-  public static getInstance() {
-    if (!this.authData)
-      throw new Error(
-        "Missing authenticacion data, IolClient.config() must be called with user authentication data before calling getInstance()."
-      );
-    if (!this.classInstance) {
-      this.classInstance = new IolClient(this.authData);
-      this.initializeConnection();
-    }
-    return this.classInstance;
-  }
-
-  public static config(authData: IolAuthData) {
-    this.authData = authData;
+    this.auth = new Authentication(authData);
+    this.initializeConnection();
   }
 
   // ACCOUNT METHODS
@@ -163,13 +143,14 @@ export default class IolClient
     return response;
   }
 
-  private static initializeConnection() {
-    this.classInstance.httpInstance.interceptors.request.use(
+  private initializeConnection() {
+    this.httpInstance.interceptors.request.use(
       async (requestConfig) => await this.useAuth(requestConfig)
     );
   }
 
-  private static async useAuth(
+  //TODO check the latency introduced by the useAuth requests middleware
+  private async useAuth(
     requestConfig: AxiosRequestConfig
   ): Promise<AxiosRequestConfig> {
     const newToken = await this.auth.getToken();
