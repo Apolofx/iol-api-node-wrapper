@@ -28,20 +28,20 @@ yarn add iol-api-node-wrapper@beta
 ## Usage example
 
 ```typescript
-const { IolClient } = require("iol-api-node-wrapper");
+  const { IolClient } = require("iol-api-node-wrapper");
 // Initialize client config
-IolClient.config({
-  url: "https://api.invertironline.com",
-  password: <your IOL password>,
-  username: <your IOL username>,
-});
-async function main(){
-    const iol = await IolClient.getInstance()
-    const account = await iol.getAccountStatus()
-    console.log(account)
+const config = {
+      url: "https://api.invertironline.com",
+      password: <your IOL password>,
+      username: <your IOL username>,
+      }
+const iol = new IolClient(config);
+async function main() {
+  const account = await iol.getAccountStatus();
+  console.log(account);
 }
+main();
 
-main()
 ```
 
 ## Authentication
