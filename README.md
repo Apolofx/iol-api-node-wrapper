@@ -108,6 +108,9 @@ await iol.fciRescue({ cantidad: 1, simbolo: "CRTAFAA" });
 // GET /api/v2/{Mercado}/Titulos/{Simbolo}/Cotizacion
 await iol.getPrice("rOFX", "DLR102021");
 
+// GET /api/v2/{Mercado}/Titulos/{Simbolo}/Opciones
+await iol.getOptions("bCBA", "GGAL");
+
 // GET /api/v2/Titulos/FCI/{simbolo}
 await iol.getFCI("CRTAFAA");
 
@@ -159,7 +162,7 @@ await iol.getAllFCI();
 
 ⬜️ `GET /api/v2/{mercado}/Titulos/{simbolo}`
 
-⬜️ `GET /api/v2/{mercado}/Titulos/{simbolo}/Opciones`
+✅ `GET /api/v2/{mercado}/Titulos/{simbolo}/Opciones`
 
 ⬜️ `GET /api/v2/{pais}/Titulos/Cotizacion/Instrumentos`
 
