@@ -1,19 +1,12 @@
+import { Plazo, Fondo, Pais, Mercado, Instrumento, Moneda, Tendencia } from ".";
 export namespace Titulos {
   interface FCI {
     variacion?: number;
     ultimoOperado?: number;
     horizonteInversion?: string;
-    rescate?: "t0" | "t1" | "t2";
+    rescate?: Plazo;
     invierte?: string;
-    tipoFondo?:
-      | "plazo_fijo_pesos"
-      | "plazo_fijo_dolares"
-      | "renta_fija_pesos"
-      | "renta_fija_dolares"
-      | "renta_mixta_pesos"
-      | "renta_mixta_dolares"
-      | "renta_variable_pesos"
-      | "renta_variable_dolares";
+    tipoFondo?: Fondo;
     avisoHorarioEjecucion?: string;
     tipoAdministradoraTituloFCI?:
       | "cONVEXITY"
@@ -29,41 +22,11 @@ export namespace Titulos {
     variacionAnual?: number;
     simbolo?: string;
     descripcion?: string;
-    pais?: "estados_Unidos" | "argentina";
-    mercado?: "bCBA" | "nYSE" | "nASDAQ" | "aMEX" | "bCS" | "rOFX";
-    tipo?:
-      | "oPCIONES"
-      | "cEDEARS"
-      | "tITULOSPUBLICOS"
-      | "aCCIONES"
-      | "cUPONESPRIVADOS"
-      | "fONDOSDEINVERSION"
-      | "aDR"
-      | "iNDICES"
-      | "bOCON"
-      | "bONEX"
-      | "cERTIFICADOSPAR"
-      | "oBLIGACIONESNEGOCIABLES"
-      | "oBLIGACIONESPYME"
-      | "cUPONESOBL"
-      | "lETRAS"
-      | "lETES"
-      | "bONOS"
-      | "fUTURO"
-      | "fondoComundeInversion";
-    plazo?: "t0" | "t1" | "t2";
-    moneda?:
-      | "peso_Argentino"
-      | "dolar_Estadounidense"
-      | "real"
-      | "peso_Mexicano"
-      | "peso_Chileno"
-      | "yen"
-      | "libra"
-      | "euro"
-      | "peso_Peruano"
-      | "peso_Colombiano"
-      | "peso_Uruguayo";
+    pais?: Pais;
+    mercado?: Mercado;
+    tipo?: Instrumento;
+    plazo?: Plazo;
+    moneda?: Moneda;
   }
 
   interface Cotizacion {
@@ -73,23 +36,12 @@ export namespace Titulos {
     maximo?: number;
     minimo?: number;
     fechaHora?: string;
-    tendencia?: "sube" | "baja" | "mantiene";
+    tendencia?: Tendencia;
     cierreAnterior?: number;
     montoOperado?: number;
     volumenNominal?: number;
     precioPromedio?: number;
-    moneda?:
-      | "peso_Argentino"
-      | "dolar_Estadounidense"
-      | "real"
-      | "peso_Mexicano"
-      | "peso_Chileno"
-      | "yen"
-      | "libra"
-      | "euro"
-      | "peso_Peruano"
-      | "peso_Colombiano"
-      | "peso_Uruguayo";
+    moneda?: Moneda;
     precioAjuste?: number;
     interesesAbiertos?: number;
     puntas?: Puntas[];
@@ -100,5 +52,17 @@ export namespace Titulos {
     precioCompra?: number;
     precioVenta?: number;
     cantidadVenta?: number;
+  }
+  interface Opciones {
+    simboloSubyacente?: string;
+    fechaVencimiento?: Date;
+    tipoOpcion?: string;
+    simbolo?: string;
+    descripcion?: string;
+    pais?: Pais;
+    mercado?: Mercado;
+    tipo?: Instrumento;
+    plazo?: Plazo;
+    moneda?: Moneda;
   }
 }

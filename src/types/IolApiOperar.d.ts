@@ -1,13 +1,14 @@
+import { Mercado, TipoOrden, Plazo } from ".";
+
 export namespace Operar {
-  type Mercado = "bCBA" | "nYSE" | "nASDAQ" | "aMEX" | "bCS" | "rOFX";
   interface Vender {
     mercado: Mercado;
     simbolo: string;
     cantidad: number;
     precio: number;
     validez: Date;
-    tipoOrden?: "precioLimite" | "precioMercado";
-    plazo?: "t0" | "t1" | "t2";
+    tipoOrden?: TipoOrden;
+    plazo?: Plazo;
   }
 
   interface Comprar {
@@ -15,9 +16,9 @@ export namespace Operar {
     simbolo: string;
     cantidad?: number;
     precio: number;
-    plazo: "t0" | "t1" | "t2";
+    plazo: Plazo;
     validez: Date;
-    tipoOrden?: "precioLimite" | "precioMercado";
+    tipoOrden?: TipoOrden;
     monto?: number;
   }
 
