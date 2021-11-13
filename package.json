@@ -23,7 +23,9 @@
     "iol",
     "api",
     "node",
-    "wrapper"
+    "wrapper",
+    "invertironline",
+    "argentina"
   ],
   "author": "Nacho Consolani",
   "license": "MIT",
