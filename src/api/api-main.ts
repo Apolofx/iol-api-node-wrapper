@@ -3,17 +3,17 @@ import Authentication from "./auth";
 import { constants } from "../config/";
 import { AxiosRequestConfig } from "axios";
 import { endpoints } from "../config/constants";
-import { Cuenta } from "../types/IolApiCuenta";
-import { Titulos } from "../types/IolApiTitulos";
-import { Operar } from "../types/IolApiOperar";
 import {
-  Mercado,
-  IolAuthData,
-  Country,
-  GenericResponse,
   IolClientInterface,
-  OperationsFilter,
-} from "../types/IolClient";
+  IolAuthData,
+  Cuenta,
+  GenericResponse,
+  OperacionesFiltro,
+  Operar,
+  Titulos,
+  Pais,
+  Mercado,
+} from "../types";
 const { endpoints: api } = constants;
 export default class IolClient
   extends HttpClient
@@ -28,7 +28,7 @@ export default class IolClient
     this.initializeConnection();
   }
 
-  // ACCOUNT METHODS
+  // MiCuenta
   public async getAccountStatus() {
     const accountStatus = await this.httpInstance.get<Cuenta.EstadoDeCuenta>(
       api.v2.estadocuenta
@@ -36,7 +36,7 @@ export default class IolClient
     return accountStatus;
   }
 
-  public async getPortfolio(country: Country) {
+  public async getPortfolio(country: Pais) {
     const portfolio = await this.httpInstance.get<Cuenta.Portafolio>(
       `${api.v2.portafolio}/${country}`
     );
@@ -57,7 +57,7 @@ export default class IolClient
     return operation;
   }
 
-  public async getOperations(filters: OperationsFilter) {
+  public async getOperations(filters: OperacionesFiltro) {
     const params = new URLSearchParams();
     Object.entries(filters).forEach((item) => {
       params.set(`filtro.${item[0]}`, item[1]);
@@ -69,6 +69,7 @@ export default class IolClient
     return operations;
   }
 
+  //Operar
   public async buy(data: Operar.Comprar) {
     const config: AxiosRequestConfig = {
       headers: {
@@ -122,6 +123,7 @@ export default class IolClient
     return response;
   }
 
+  //Titulos
   public async getAllFCI() {
     const response = await this.httpInstance.get<Titulos.FCI[]>(
       endpoints.v2.titulos.fci
@@ -139,6 +141,13 @@ export default class IolClient
   public async getPrice(market: Mercado, symbol: string) {
     const response = await this.httpInstance.get<Titulos.Cotizacion>(
       endpoints.v2.titulos.cotizacion(market, symbol)
+    );
+    return response;
+  }
+
+  public async getOptions(market: Mercado, symbol: string) {
+    const response = await this.httpInstance.get<Titulos.Opciones>(
+      endpoints.v2.titulos.opciones(market, symbol)
     );
     return response;
   }

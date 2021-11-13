@@ -1,6 +1,6 @@
 {
   "name": "iol-api-node-wrapper",
-  "version": "0.2.1",
+  "version": "0.3.1",
   "description": "Node Library to wrap Invertir Online API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -23,7 +23,9 @@
     "iol",
     "api",
     "node",
-    "wrapper"
+    "wrapper",
+    "invertironline",
+    "argentina"
   ],
   "author": "Nacho Consolani",
   "license": "MIT",

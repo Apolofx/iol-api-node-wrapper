@@ -5,6 +5,6 @@ export {
   IolClientInterface,
   Titulos,
   Mercado,
-  OperationsFilter,
-  Country,
+  OperacionesFiltro,
+  Pais,
 } from "./types";
