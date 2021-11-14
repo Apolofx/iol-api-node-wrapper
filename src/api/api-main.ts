@@ -146,7 +146,7 @@ export default class IolClient
   }
 
   public async getOptions(market: Mercado, symbol: string) {
-    const response = await this.httpInstance.get<Titulos.Opciones>(
+    const response = await this.httpInstance.get<Titulos.Opcion[]>(
       endpoints.v2.titulos.opciones(market, symbol)
     );
     return response;
