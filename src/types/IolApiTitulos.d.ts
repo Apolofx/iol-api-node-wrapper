@@ -53,7 +53,8 @@ export namespace Titulos {
     precioVenta?: number;
     cantidadVenta?: number;
   }
-  interface Opciones {
+  interface Opcion {
+    cotizacion: Cotizacion;
     simboloSubyacente?: string;
     fechaVencimiento?: Date;
     tipoOpcion?: string;
