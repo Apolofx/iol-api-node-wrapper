@@ -166,7 +166,7 @@ await iol.getAllFCI();
 
 ⬜️ `GET /api/v2/{pais}/Titulos/Cotizacion/Instrumentos`
 
-⬜️ `GET /api/v2/Cotizaciones/{Instrumento}/{Panel}/{Pais}`
+✅ `GET /api/v2/Cotizaciones/{Instrumento}/{Panel}/{Pais}`
 
 ⬜️ `GET /api/v2/{pais}/Titulos/Cotizacion/Paneles/{instrumento}`
 
