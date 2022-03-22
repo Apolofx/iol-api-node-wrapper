@@ -1,5 +1,4 @@
-import { Instrumento, Pais } from "../types";
-import { Paneles } from "../types/IolApiPaneles";
+import { Instrumento, Pais, Paneles } from "../types";
 
 export const IOL_API_URL = "https://api.invertironline.com";
 export const endpoints = {

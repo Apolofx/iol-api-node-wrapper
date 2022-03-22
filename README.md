@@ -116,6 +116,9 @@ await iol.getFCI("CRTAFAA");
 
 // GET /api/v2/Titulos/FCI
 await iol.getAllFCI();
+
+//GET /api/v2/Cotizaciones/{Instrumento}/{Panel}/{Pais}
+await iol.getQuotes("opciones", "calls", "argentina");
 ```
 
 ## API Wrapper progress
@@ -166,7 +169,7 @@ await iol.getAllFCI();
 
 ⬜️ `GET /api/v2/{pais}/Titulos/Cotizacion/Instrumentos`
 
-⬜️ `GET /api/v2/Cotizaciones/{Instrumento}/{Panel}/{Pais}`
+✅ `GET /api/v2/Cotizaciones/{Instrumento}/{Panel}/{Pais}`
 
 ⬜️ `GET /api/v2/{pais}/Titulos/Cotizacion/Paneles/{instrumento}`
 
