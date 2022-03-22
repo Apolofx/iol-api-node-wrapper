@@ -1,7 +1,8 @@
 import { Cuenta } from "./IolApiCuenta";
 import { Titulos } from "./IolApiTitulos";
 import { Operar } from "./IolApiOperar";
-
+import { Cotizaciones } from "./IolApiCotizaciones";
+import { Paneles } from "./IolApiPaneles";
 export interface AuthResponse {
   access_token: string;
   token_type: string;
@@ -47,6 +48,12 @@ export interface IolClientInterface {
   getAllFCI(): Promise<Titulos.FCI[]>;
   getFCI(symbol: string): Promise<Titulos.FCI>;
   getPrice(market: Mercado, symbol: string): Promise<Titulos.Cotizacion>;
+  getOptions(market: Mercado, symbol: string): Promise<Titulos.Opcion[]>;
+  getQuotes(
+    instrument: Instrumento,
+    panel: Paneles.Todos,
+    country: Pais
+  ): Promise<Cotizaciones.Cotizacion[]>;
 }
 
 export type Pais = "estados_Unidos" | "argentina";
@@ -65,26 +72,26 @@ export type Moneda =
   | "peso_Uruguayo";
 export type Plazo = "t0" | "t1" | "t2";
 export type Instrumento =
-  | "oPCIONES"
-  | "cEDEARS"
-  | "tITULOSPUBLICOS"
-  | "aCCIONES"
-  | "cUPONESPRIVADOS"
-  | "fONDOSDEINVERSION"
-  | "aDR"
-  | "iNDICES"
-  | "bOCON"
-  | "bONEX"
-  | "cERTIFICADOSPAR"
-  | "oBLIGACIONESNEGOCIABLES"
-  | "oBLIGACIONESPYME"
-  | "cUPONESOBL"
-  | "lETRAS"
-  | "lETES"
-  | "bONOS"
-  | "fUTURO"
-  | "fondoComundeInversion";
-export type Mercado = "bCBA" | "nYSE" | "nASDAQ" | "aMEX" | "bCS" | "rOFX";
+  | "opciones"
+  | "cedears"
+  | "titulospublicos"
+  | "acciones"
+  | "cuponesprivados"
+  | "fondosdeinversion"
+  | "adr"
+  | "indices"
+  | "bocon"
+  | "bonex"
+  | "certificadospar"
+  | "obligacionesnegociables"
+  | "obligacionespyme"
+  | "cuponesobl"
+  | "letras"
+  | "letes"
+  | "bonos"
+  | "futuro"
+  | "fondocomundeinversion";
+export type Mercado = "BCBA" | "NYSE" | "NASDAQ" | "AMEX" | "BCS" | "ROFX";
 export type TipoOrden = "precioLimite" | "precioMercado";
 export type Fondo =
   | "plazo_fijo_pesos"

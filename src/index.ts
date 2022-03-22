@@ -7,4 +7,6 @@ export {
   Mercado,
   OperacionesFiltro,
   Pais,
+  Paneles,
+  Cotizaciones,
 } from "./types";
