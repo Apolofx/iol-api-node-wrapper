@@ -1,3 +1,6 @@
+import { Instrumento, Pais } from "../types";
+import { Paneles } from "../types/IolApiPaneles";
+
 export const IOL_API_URL = "https://api.invertironline.com";
 export const endpoints = {
   v2: {
@@ -18,5 +21,10 @@ export const endpoints = {
       opciones: (mercado: string, simbolo: string) =>
         `/api/v2/${mercado}/Titulos/${simbolo}/Opciones`,
     },
+    cotizaciones: (
+      instrument: Instrumento,
+      panel: Paneles.Todos,
+      country: Pais
+    ) => `/api/v2/Cotizaciones/${instrument}/${panel}/${country}`,
   },
 };
