@@ -13,7 +13,10 @@ import {
   Titulos,
   Pais,
   Mercado,
+  Instrumento,
 } from "../types";
+import { Cotizaciones } from "../types/IolApiCotizaciones";
+import { Paneles } from "../types/IolApiPaneles";
 const { endpoints: api } = constants;
 export default class IolClient
   extends HttpClient
@@ -148,6 +151,24 @@ export default class IolClient
   public async getOptions(market: Mercado, symbol: string) {
     const response = await this.httpInstance.get<Titulos.Opcion[]>(
       endpoints.v2.titulos.opciones(market, symbol)
+    );
+    return response;
+  }
+
+  public async getQuotes(
+    instrument: Instrumento,
+    panel: Paneles.Todos,
+    country: Pais
+  ): Promise<Cotizaciones.Cotizacion[]> {
+    const response = await this.httpInstance.get<Cotizaciones.Cotizacion[]>(
+      endpoints.v2.cotizaciones(instrument, panel, country),
+      {
+        params: {
+          "panelCotizacion.instrumento": instrument,
+          "panelCotizacion.panel": panel,
+          "panelCotizacion.pais": country,
+        },
+      }
     );
     return response;
   }
